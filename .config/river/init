@@ -1,0 +1,181 @@
+# --- dbus/portal/jis/tray-applets ---
+# Chimeraはdinitでsystemd-logindが無いため、D-Busセッションバスを
+# UID固定パスに明示的に立てる(flatpakのSpawnポータルが依存するため)
+_uid=$(id -u)
+_bus_path="/run/user/${_uid}/bus"
+if [ ! -S "$_bus_path" ]; then
+    dbus-daemon --session --fork --nopidfile --address="unix:path=${_bus_path}"
+fi
+export DBUS_SESSION_BUS_ADDRESS="unix:path=${_bus_path}"
+export XDG_CURRENT_DESKTOP=river
+export XDG_SESSION_TYPE=wayland
+
+killall -q xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk nm-applet blueman-applet 2>/dev/null
+dbus-update-activation-environment DBUS_SESSION_BUS_ADDRESS WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE 2>/dev/null
+
+find_bin() {
+    for d in /usr/libexec /usr/lib/xdg-desktop-portal /usr/lib /usr/bin; do
+        [ -x "$d/$1" ] && { echo "$d/$1"; return 0; }
+    done
+    command -v "$1" 2>/dev/null
+}
+WLR_PORTAL=$(find_bin xdg-desktop-portal-wlr)
+MAIN_PORTAL=$(find_bin xdg-desktop-portal)
+[ -n "$WLR_PORTAL" ] && "$WLR_PORTAL" &
+[ -n "$MAIN_PORTAL" ] && "$MAIN_PORTAL" &
+
+# GUIのwifi/bluetoothトレイアプレット(waybarのtrayに出る)
+nm-applet --indicator &
+blueman-applet &
+
+riverctl keyboard-layout jp
+
+#!/bin/sh
+
+# --- 1. D-Bus & XDG セッション設定 ---
+_uid=$(id -u)
+_bus_path="/run/user/${_uid}/bus"
+if [ ! -S "$_bus_path" ]; then
+    dbus-daemon --session --fork --nopidfile --address="unix:path=${_bus_path}"
+fi
+export DBUS_SESSION_BUS_ADDRESS="unix:path=${_bus_path}"
+export XDG_CURRENT_DESKTOP=river
+export XDG_SESSION_TYPE=wayland
+
+# Fcitx5 (日本語入力)
+export XMODIFIERS=@im=fcitx
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export SDL_IM_MODULE=fcitx
+
+# --- 2. XDG Desktop Portal ---
+killall -q xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk 2>/dev/null
+dbus-update-activation-environment DBUS_SESSION_BUS_ADDRESS WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE 2>/dev/null
+
+find_portal_bin() {
+    for d in /usr/libexec /usr/lib/xdg-desktop-portal /usr/lib /usr/bin; do
+        [ -x "$d/$1" ] && { echo "$d/$1"; return 0; }
+    done
+    command -v "$1" 2>/dev/null
+}
+WLR_PORTAL=$(find_portal_bin xdg-desktop-portal-wlr)
+MAIN_PORTAL=$(find_portal_bin xdg-desktop-portal)
+[ -n "$WLR_PORTAL" ] && "$WLR_PORTAL" &
+[ -n "$MAIN_PORTAL" ] && "$MAIN_PORTAL" &
+
+# --- 3. 重複プロセスの一括キル ---
+killall -q waybar fcitx5 rivertile awww-daemon swaybg 2>/dev/null
+
+# --- 4. デーモン類の自動起動 ---
+waybar &
+fcitx5 -d &
+
+# 壁紙 (awww があれば使用、なければ swaybg)
+if command -v awww-daemon >/dev/null 2>&1; then
+    awww-daemon &
+    FIRST_WALL=$(ls -1 "$HOME/Pictures/wallpapers" 2>/dev/null | head -n1)
+    if [ -n "$FIRST_WALL" ]; then
+        sleep 0.5
+        awww img "$HOME/Pictures/wallpapers/$FIRST_WALL" --transition-type fade --transition-duration 1 &
+    fi
+else
+    swaybg -c '#060913' &
+fi
+
+# タイリングレイアウト
+riverctl default-layout rivertile
+rivertile -view-padding 10 -outer-padding 14 &
+
+# --- 5. 見ため・操作感の設定 ---
+riverctl border-width 3
+riverctl border-color-focused "0x7fdceb"    # シアン
+riverctl border-color-unfocused "0x1e1e2e"  # ダークブルー
+
+riverctl focus-follows-cursor normal
+riverctl set-cursor-warp on-focus-change
+riverctl hide-cursor timeout 3000
+riverctl hide-cursor when-typing enabled
+
+# スクラッチパッド
+scratch_tag=$((1 << 20))
+riverctl map normal Super P toggle-focused-tags ${scratch_tag}
+riverctl map normal Super+Shift P set-view-tags ${scratch_tag}
+all_but_scratch_tag=$(( ((1 << 32) - 1) ^ $scratch_tag ))
+riverctl spawn-tagmask ${all_but_scratch_tag}
+
+# --- 6. キーバインド設定 ---
+riverctl map normal Super Return spawn foot
+riverctl map normal Super D spawn fuzzel
+riverctl map normal Super Q close
+riverctl map normal Super+Shift E exit
+riverctl map normal Super F toggle-fullscreen
+riverctl map normal Super Space toggle-float
+riverctl map normal Super+Shift Space toggle-float
+riverctl map normal Super+Shift L spawn "swaylock -f -c 060913"
+
+# クイック設定 / 壁紙ピッカー
+riverctl map normal Super S spawn "$HOME/.local/bin/control-center.sh"
+riverctl map normal Super+Shift W spawn "$HOME/.local/bin/wallpaper-picker.sh"
+
+# フォーカス移動・入れ替え
+riverctl map normal Super J focus-view next
+riverctl map normal Super K focus-view previous
+riverctl map normal Super+Shift J swap next
+riverctl map normal Super+Shift K swap previous
+riverctl map normal Super H send-layout-cmd rivertile "main-ratio -0.05"
+riverctl map normal Super L send-layout-cmd rivertile "main-ratio +0.05"
+
+# マルチモニタ
+riverctl map normal Super Period focus-output next
+riverctl map normal Super Comma focus-output previous
+riverctl map normal Super+Shift Period send-to-output next
+riverctl map normal Super+Shift Comma send-to-output previous
+
+# ワークスペース (1-9, 0)
+for i in $(seq 1 9); do
+    tags=$((1 << (i - 1)))
+    riverctl map normal Super $i set-focused-tags $tags
+    riverctl map normal Super+Shift $i set-view-tags $tags
+    riverctl map normal Super+Control $i toggle-focused-tags $tags
+    riverctl map normal Super+Shift+Control $i toggle-view-tags $tags
+done
+riverctl map normal Super 0 set-focused-tags 0xFFFFFFFF
+riverctl map normal Super+Shift 0 set-view-tags 0xFFFFFFFF
+
+# フローティングリサイズ
+riverctl map normal Super+Alt H resize horizontal -100
+riverctl map normal Super+Alt L resize horizontal 100
+riverctl map normal Super+Alt K resize vertical -100
+riverctl map normal Super+Alt J resize vertical 100
+
+# マウス操作
+riverctl map-pointer normal Super BTN_LEFT move-view
+riverctl map-pointer normal Super BTN_RIGHT resize-view
+riverctl map-pointer normal Super BTN_MIDDLE toggle-float
+
+# スクリーンショット
+riverctl map normal None Print spawn "grim -g \"\$(slurp)\" - | wl-copy"
+riverctl map normal Super Print spawn "grim - | wl-copy"
+
+# メディアキー
+riverctl map normal None XF86AudioRaiseVolume  spawn "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
+riverctl map normal None XF86AudioLowerVolume  spawn "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+riverctl map normal None XF86AudioMute          spawn "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+riverctl map normal None XF86MonBrightnessUp   spawn "brightnessctl set +5%"
+riverctl map normal None XF86MonBrightnessDown spawn "brightnessctl set 5%-"
+riverctl map normal Super T spawn foot
+riverctl keyboard-layout jp
+riverctl send-layout-cmd rivertile "main-ratio 0.5"
+riverctl map normal Super+Alt 1 set-view-tags 1
+riverctl map normal Super+Alt 2 set-view-tags 2
+riverctl map normal Super+Alt 3 set-view-tags 4
+riverctl map normal Super+Alt 4 set-view-tags 8
+riverctl map normal Super+Alt 5 set-view-tags 16
+riverctl map normal Super+Alt 6 set-view-tags 32
+riverctl map normal Super+Alt 7 set-view-tags 64
+riverctl map normal Super+Alt 8 set-view-tags 128
+riverctl map normal Super+Alt 9 set-view-tags 256
+
+# --- waybar addition ---
+pkill waybar 2>/dev/null
+waybar &

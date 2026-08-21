@@ -1,0 +1,22 @@
+* {
+    border: none; border-radius: 0;
+    font-family: "JetBrainsMono Nerd Font", "Noto Sans CJK JP", monospace;
+    font-size: 14px; min-height: 0; font-weight: bold;
+}
+window#waybar { background: transparent; }
+#tags, #window, #clock, #cpu, #memory, #battery, #tray {
+    background: rgba(10, 15, 25, 0.45);
+    color: #e0eaff;
+    padding: 0 18px; margin: 0 4px;
+    border-radius: 20px;
+    border: 1px solid rgba(127, 220, 235, 0.3);
+    box-shadow: 0 0 10px rgba(127, 220, 235, 0.15);
+}
+#tags button { color: #585b70; padding: 0 12px; border-radius: 14px; transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
+#tags button.focused { 
+    color: #060913; background: #7fdceb; 
+    box-shadow: 0 0 12px rgba(127, 220, 235, 0.6); 
+}
+#tags button:hover { background: rgba(127, 220, 235, 0.2); color: #7fdceb; }
+#clock { color: #b4befe; }
+#window { font-weight: normal; color: #a6adc8; }

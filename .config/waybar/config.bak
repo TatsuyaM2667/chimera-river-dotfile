@@ -1,0 +1,14 @@
+{
+    "layer": "top", "position": "top", "height": 38,
+    "margin-top": 12, "margin-left": 18, "margin-right": 18, "spacing": 8,
+    "modules-left": ["river/tags", "river/window"],
+    "modules-center": ["clock"],
+    "modules-right": ["cpu", "memory", "battery", "tray"],
+    "river/tags": { "num-tags": 9 },
+    "river/window": { "max-length": 45 },
+    "clock": { "format": "  {:%H:%M     %m/%d}" },
+    "cpu": { "format": "  {usage}%" },
+    "memory": { "format": "  {percentage}%" },
+    "battery": { "format": "{icon}  {capacity}%", "format-charging": "󰂄 {capacity}%", "format-icons": ["", "", "", "", ""] },
+    "tray": { "spacing": 12 }
+}

@@ -1,0 +1,98 @@
+* {
+    border: none; border-radius: 0;
+    font-family: "Symbols Nerd Font", "JetBrainsMono Nerd Font", sans-serif;
+    font-size: 13.5px;
+    font-weight: 500;
+    min-height: 0;
+}
+
+window#waybar { background: transparent; color: #cdd6f4; }
+
+/* --- 常時表示のピル群 --- */
+#tags, #window, #clock, #mpris,
+#group-volume, #group-backlight, #group-network, #group-bluetooth,
+#battery, #tray {
+    background: rgba(15, 15, 23, 0.72);
+    padding: 0 16px;
+    margin: 0 4px;
+    border-radius: 14px;
+    border: 1px solid rgba(137, 220, 235, 0.22);
+    box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.35),
+        0 4px 16px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    transition: all 280ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+#group-network:hover, #group-bluetooth:hover,
+#group-volume:hover, #group-backlight:hover {
+    border-color: rgba(137, 220, 235, 0.5);
+    box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.35),
+        0 6px 20px rgba(137, 220, 235, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+#tags button {
+    color: #6c7086; padding: 0 8px; border-radius: 10px;
+    transition: all 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+#tags button.focused {
+    color: #89dceb; background: rgba(137, 220, 235, 0.16);
+    text-shadow: 0 0 8px rgba(137, 220, 235, 0.7);
+}
+#tags button:hover { background: rgba(137, 220, 235, 0.08); }
+
+#clock { color: #89b4fa; font-weight: 700; letter-spacing: 0.3px; }
+#mpris { color: #a6e3a1; font-style: italic; }
+#window { color: #a6adc8; font-weight: 400; }
+
+/* --- ドロワーで滑り出るサブウィジェット --- */
+#custom-network-status, #custom-bt-status,
+#custom-wifi-toggle, #custom-bt-toggle,
+#custom-network-settings, #custom-bt-settings,
+#pulseaudio-slider, #backlight-slider {
+    margin: 0 3px;
+    padding: 0 12px;
+    border-radius: 12px;
+    background: rgba(137, 220, 235, 0.06);
+    transition: all 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+#custom-network-status:hover, #custom-bt-status:hover,
+#custom-network-settings:hover, #custom-bt-settings:hover {
+    background: rgba(137, 220, 235, 0.16);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* トグルスイッチ風ピル */
+#custom-wifi-toggle, #custom-bt-toggle { font-weight: 600; font-size: 12px; }
+#custom-wifi-toggle.on, #custom-bt-toggle.on {
+    background: rgba(137, 220, 235, 0.28);
+    color: #89dceb;
+    text-shadow: 0 0 6px rgba(137, 220, 235, 0.5);
+}
+#custom-wifi-toggle.off, #custom-bt-toggle.off {
+    background: rgba(108, 112, 134, 0.18);
+    color: #6c7086;
+}
+
+#custom-network-status.connected, #custom-bt-status.connected { color: #a6e3a1; }
+#custom-network-status.disconnected, #custom-bt-status.disconnected { color: #f9e2af; }
+#custom-network-status.muted, #custom-bt-status.muted { color: #6c7086; }
+
+/* スライダー(音量/輝度) */
+#pulseaudio-slider trough, #backlight-slider trough {
+    min-width: 90px; min-height: 6px; border-radius: 3px;
+    background-color: rgba(49, 50, 68, 0.8);
+}
+#pulseaudio-slider highlight, #backlight-slider highlight {
+    border-radius: 3px; background-color: #89dceb;
+}
+
+/* Tooltip */
+tooltip {
+    background: rgba(20, 20, 30, 0.92);
+    border: 1px solid rgba(137, 220, 235, 0.4);
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+tooltip label { color: #cdd6f4; padding: 6px 4px; font-weight: 400; }
