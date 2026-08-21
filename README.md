@@ -112,12 +112,9 @@ chmod +x install.sh
 ---
 
 Crafted with ❤️ for **Chimera Linux** & **River WM**
-
+```
 cd ~/dotfiles
 git add README.md
 git commit -m "docs: elevate README aesthetics with badges, system architecture, and curated layout"
 git push origin main
-
-```
-
 ```
