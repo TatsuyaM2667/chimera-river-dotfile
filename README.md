@@ -1,11 +1,4 @@
 
-# ❄️ Chimera River Dotfiles
-
-> **Caelestia Vibe & Cyberpunk Aesthetics on Chimera Linux**  
-> River Wayland コンポジタのカスタマイズ環境。
-
-
-
 
 <div align="center">
 
