@@ -179,3 +179,16 @@ riverctl map normal Super+Alt 9 set-view-tags 256
 # --- waybar addition ---
 pkill waybar 2>/dev/null
 waybar &
+
+# --- ショートカットキーの設定 ---
+# PrtSc: 範囲選択して撮影 (クリップボードと ~/Pictures/Screenshots に保存)
+riverctl map normal None Print spawn 'sh -c "FILE=~/Pictures/Screenshots/shot_\$(date +%Y%m%d_%H%M%S).png; grim -g \"\$(slurp)\" \$FILE && wl-copy < \$FILE"'
+
+# Shift + PrtSc: 全画面撮影
+riverctl map normal Shift Print spawn 'sh -c "FILE=~/Pictures/Screenshots/shot_\$(date +%Y%m%d_%H%M%S).png; grim \$FILE && wl-copy < \$FILE"'
+
+# Super + B: Firefox起動
+riverctl map normal Super B spawn firefox
+
+# Super + Shift + R: 画面録画の開始 / 停止
+riverctl map normal Super+Shift R spawn ~/.local/bin/toggle-record.sh
