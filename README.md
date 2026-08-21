@@ -1,4 +1,4 @@
-cat << 'EOF' > ~/dotfiles/README.md
+
 # ❄️ Chimera River Dotfiles
 
 > **Caelestia Vibe & Cyberpunk Aesthetics on Chimera Linux**  
