@@ -192,3 +192,21 @@ riverctl map normal Super B spawn firefox
 
 # Super + Shift + R: 画面録画の開始 / 停止
 riverctl map normal Super+Shift R spawn ~/.local/bin/toggle-record.sh
+
+riverctl corner-radius 14 2>/dev/null
+riverctl border-radius-focused 14 2>/dev/null
+riverctl border-radius-unfocused 14 2>/dev/null
+riverctl blur on 2>/dev/null
+riverctl blur-passes 3 2>/dev/null
+riverctl blur-radius 10 2>/dev/null
+riverctl blur-optimized on 2>/dev/null
+riverctl shadow on 2>/dev/null
+riverctl shadow-radius 25 2>/dev/null
+riverctl shadow-color "0x060913cc" 2>/dev/null
+riverctl shadow-offset-x 0 2>/dev/null
+riverctl shadow-offset-y 8 2>/dev/null
+riverctl active-dim 0.05 2>/dev/null
+riverctl opacity-focused 1.0 2>/dev/null
+riverctl opacity-unfocused 0.85 2>/dev/null
+riverctl animation on 2>/dev/null
+riverctl animation-speed 300 2>/dev/null

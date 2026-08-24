@@ -23,6 +23,8 @@
 
 ## ✨ Features
 
+* **SceneFX Integration**: 角丸化 (Corner Radius)、背景ぼかし (Blur)、ドロップシャドウによるリッチな描画 (※要カスタムビルド)
+
 * **Caelestia & End-4 Inspired Design**: 鮮やかなシアンと透明感あふれるフローティングUI。
 * **日本語入力最適化**: Fcitx5 (kkc) 環境変数を同梱し、Wayland上で快適に動作。
 * **高度なキーバインド＆マウス統合**:
