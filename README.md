@@ -1,6 +1,9 @@
 
 # ❄️ Chimera River Dotfiles
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Z1Y325S0VH)
+
+
 > **Caelestia Vibe & Cyberpunk Aesthetics on Chimera Linux**  
 > River Wayland コンポジタのカスタマイズ環境。
 
