@@ -1,4 +1,12 @@
-riverctl map normal Super N spawn "swaync-client -t -sw"
+riverctl map normal Super N spawn "swaync-client -t"
+riverctl map normal Super+Shift Up swap up
+riverctl map normal Super+Shift Down swap down
+riverctl map normal Super+Shift Left swap left
+riverctl map normal Super+Shift Right swap right
+riverctl map normal Super+Shift K swap up
+riverctl map normal Super+Shift J swap down
+riverctl map normal Super+Shift H swap left
+riverctl map normal Super+Shift L swap right
 swaync &
 for i in 1 2 3 4 5 6 7 8 9; do
     tags=$((1 << ($i - 1)))
@@ -126,8 +134,6 @@ riverctl map normal Super+Shift W spawn "$HOME/.local/bin/wallpaper-picker.sh"
 # フォーカス移動・入れ替え
 riverctl map normal Super J focus-view next
 riverctl map normal Super K focus-view previous
-riverctl map normal Super+Shift J swap next
-riverctl map normal Super+Shift K swap previous
 riverctl map normal Super H send-layout-cmd rivertile "main-ratio -0.05"
 riverctl map normal Super L send-layout-cmd rivertile "main-ratio +0.05"
 
@@ -151,7 +157,6 @@ riverctl map normal Super+Shift 0 set-view-tags 0xFFFFFFFF
 # フローティングリサイズ
 
 # マウス操作
-riverctl map-pointer normal Super BTN_LEFT move-view
 riverctl map-pointer normal Super BTN_RIGHT resize-view
 riverctl map-pointer normal Super BTN_MIDDLE toggle-float
 
