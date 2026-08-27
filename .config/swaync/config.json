@@ -1,0 +1,39 @@
+{
+  "positionX": "right",
+  "positionY": "top",
+  "layer": "overlay",
+  "control-center-layer": "top",
+  "layer-shell": true,
+  "cssPriority": "application",
+  "control-center-margin-top": 12,
+  "control-center-margin-bottom": 12,
+  "control-center-margin-right": 12,
+  "control-center-margin-left": 12,
+  "notification-2way-close": true,
+  "notification-drop-shadow": true,
+  "label-wrap": true,
+  "control-center-width": 380,
+  "control-center-height": 700,
+  "notification-window-width": 380,
+  "keyboard-shortcuts": true,
+  "image-visibility": "when-available",
+  "transition-length": 200,
+  "hide-on-clear": false,
+  "hide-on-action": true,
+  "script-fail-notify": true,
+  "widgets": [
+    "title",
+    "dnd",
+    "notifications"
+  ],
+  "widget-config": {
+    "title": {
+      "text": "通知センター",
+      "clear-all-button": true,
+      "button-text": "クリア"
+    },
+    "dnd": {
+      "text": "🌙 おやすみモード"
+    }
+  }
+}

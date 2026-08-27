@@ -1,0 +1,53 @@
+* {
+  font-family: sans-serif;
+  transition: 200ms;
+}
+
+.control-center {
+  background: rgba(15, 20, 30, 0.75); /* サイバーパンクな半透明ダークブルー */
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.widget-title {
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 12px;
+}
+
+.widget-title>button {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border-radius: 8px;
+  border: none;
+  padding: 5px 15px;
+}
+
+.widget-title>button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.widget-dnd {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  margin: 10px;
+  color: white;
+}
+
+.notification-row .notification-background {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  margin: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.notification-row .notification-background .summary {
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.notification-row .notification-background .body {
+  color: #cccccc;
+}
