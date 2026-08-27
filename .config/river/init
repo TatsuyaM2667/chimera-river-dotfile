@@ -143,10 +143,6 @@ riverctl map normal Super 0 set-focused-tags 0xFFFFFFFF
 riverctl map normal Super+Shift 0 set-view-tags 0xFFFFFFFF
 
 # フローティングリサイズ
-riverctl map normal Super+Alt H resize horizontal -100
-riverctl map normal Super+Alt L resize horizontal 100
-riverctl map normal Super+Alt K resize vertical -100
-riverctl map normal Super+Alt J resize vertical 100
 
 # マウス操作
 riverctl map-pointer normal Super BTN_LEFT move-view
@@ -166,15 +162,6 @@ riverctl map normal None XF86MonBrightnessDown spawn "brightnessctl set 5%-"
 riverctl map normal Super T spawn foot
 riverctl keyboard-layout jp
 riverctl send-layout-cmd rivertile "main-ratio 0.5"
-riverctl map normal Super+Alt 1 set-view-tags 1
-riverctl map normal Super+Alt 2 set-view-tags 2
-riverctl map normal Super+Alt 3 set-view-tags 4
-riverctl map normal Super+Alt 4 set-view-tags 8
-riverctl map normal Super+Alt 5 set-view-tags 16
-riverctl map normal Super+Alt 6 set-view-tags 32
-riverctl map normal Super+Alt 7 set-view-tags 64
-riverctl map normal Super+Alt 8 set-view-tags 128
-riverctl map normal Super+Alt 9 set-view-tags 256
 
 # --- waybar addition ---
 pkill waybar 2>/dev/null
@@ -214,11 +201,13 @@ riverctl animation-speed 300 2>/dev/null
 # Super + Alt + 1~9: ウィンドウを移動して自分も一緒に追従する
 for i in $(seq 1 9); do
     tags=$((1 << ($i - 1)))
-    riverctl map normal Super+Alt $i spawn "riverctl set-view-tags $tags && riverctl set-focused-tags $tags"
 done
 
 # Super + Alt + 1~9: ウィンドウを移動して自分も追従する
 for i in $(seq 1 9); do
     tags=$((1 << ($i - 1)))
-    riverctl map normal Super+Alt $i spawn "river-move-and-follow.sh $tags"
+done
+for i in $(seq 1 9); do
+    tags=$((1 << ($i - 1)))
+    riverctl map normal Super+Alt $i spawn "$HOME/.local/bin/river-move-and-follow.sh $tags"
 done
