@@ -216,3 +216,9 @@ for i in $(seq 1 9); do
     tags=$((1 << ($i - 1)))
     riverctl map normal Super+Alt $i spawn "riverctl set-view-tags $tags && riverctl set-focused-tags $tags"
 done
+
+# Super + Alt + 1~9: ウィンドウを移動して自分も追従する
+for i in $(seq 1 9); do
+    tags=$((1 << ($i - 1)))
+    riverctl map normal Super+Alt $i spawn "river-move-and-follow.sh $tags"
+done
