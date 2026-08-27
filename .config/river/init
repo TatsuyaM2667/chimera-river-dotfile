@@ -1,3 +1,7 @@
+for i in 1 2 3 4 5 6 7 8 9; do
+    tags=$((1 << ($i - 1)))
+    riverctl map normal Super+Alt $i spawn "sh -c 'riverctl set-view-tags $tags ; sleep 0.05 ; riverctl set-focused-tags $tags'"
+done
 # --- dbus/portal/jis/tray-applets ---
 # Chimeraはdinitでsystemd-logindが無いため、D-Busセッションバスを
 # UID固定パスに明示的に立てる(flatpakのSpawnポータルが依存するため)
@@ -216,5 +220,4 @@ for i in $(seq 1 9); do
 done
 for i in 1 2 3 4 5 6 7 8 9; do
     tags=$((1 << ($i - 1)))
-    riverctl map normal Super+Alt $i spawn "$HOME/.local/bin/river-move-follow $tags"
 done
